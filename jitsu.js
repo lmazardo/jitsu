@@ -69,22 +69,23 @@ function assertRaise(testFunction, pattern, message) {
 var errors = {};
 var error = false;
 
-function getNames() {
+
+var JITSU = (function() {
+
+var arrayContains = function (aray, element) {
+    for(var i=0; i<aray.length; i++) {
+        if(aray[i] == element) return true;
+    }
+    return false;
+},
+	getNames = function () {
     var names = [];
     for (var name in this) {
         names.push(name);
     }
     return names;
 }
-
-function arrayContains(aray, element) {
-    for(var i=0; i<aray.length; i++) {
-        if(aray[i] == element) return true;
-    }
-    return false;
-}
-
-function runTestFile(testFileName) {
+	runTestFile = function (testFileName) {
     testOK = true;
     print("Running '" + testFileName + "'");
     out.flush();
@@ -126,12 +127,20 @@ function runTestFile(testFileName) {
             delete this[name];
         }
     }
-}
+	
+};
 
+ return {
+	runTestFile:runTestFile
+};
+}());
+
+var runTestFile = JITSU.runTestFile;
+
+var main = function (arguments) {
 println("Loading " + arguments.length + " JavaScript test file(s)");
 for(var i=0; i<arguments.length; i++) {
-    runTestFile(String(arguments[i]));
-}
+    runTestFile(String(arguments[i])); }
 
 if(error) {
     println("ERRORS:");
@@ -145,3 +154,5 @@ if(error) {
 } else {
     println("OK");
 }
+};
+main(arguments);

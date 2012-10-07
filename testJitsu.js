@@ -66,6 +66,12 @@ function testAssertRaise() {
     assertRaise(function() {assertRaise(function() {var i = 0;}, /./, "No error");}, /^No error$/);
 }
 
+function testFunctionIsNotExported() {
+    assertFalse(typeof arrayContains == "function", "arrayContains is globally exported");
+    assertFalse(typeof getNames == "function", "getNames is globally exported");
+}
+
+
 function testSleep() {
     sleep(1000);
 }
